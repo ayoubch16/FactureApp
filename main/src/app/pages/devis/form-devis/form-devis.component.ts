@@ -73,16 +73,16 @@ export class FormDevisComponent implements OnInit {
 
   // Données du formulaire
   nouvelArticle: ArticleTable = this.initialiserNouvelArticle();
-  totalHT: number = 0;
-  tva: number = 0;
-  totalTTC: number = 0;
-  devisDate: string = new Date().toISOString().split('T')[0];
-  devisNumber: string = '';
+  totalHT = 0;
+  tva = 0;
+  totalTTC = 0;
+  devisDate = new Date().toISOString().split('T')[0];
+  devisNumber = '';
   currentDevisId: number | null = null;
 
   // États
-  modeEdition: boolean = false;
-  articleEnEditionIndex: number = -1;
+  modeEdition = false;
+  articleEnEditionIndex = -1;
   isLoading = false;
 
   @Output() articlesChanged = new EventEmitter<ArticleTable[]>();

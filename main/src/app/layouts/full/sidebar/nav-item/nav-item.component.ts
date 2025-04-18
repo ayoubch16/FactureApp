@@ -27,7 +27,7 @@ export class AppNavItemComponent implements OnChanges {
 
   @Input() item: NavItem | any;
 
-  expanded: any = false;
+  expanded = false;
 
   @HostBinding('attr.aria-expanded') ariaExpanded = this.expanded;
   @Input() depth: any;

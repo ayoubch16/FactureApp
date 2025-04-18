@@ -15,6 +15,7 @@ import { RouterModule } from '@angular/router';
       />
     </a>
   `,
+  standalone: true
 })
 export class BrandingComponent {
   options = this.settings.getOptions();
