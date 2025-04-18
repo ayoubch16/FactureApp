@@ -1,5 +1,5 @@
-import { BreakpointObserver, MediaMatcher } from '@angular/cdk/layout';
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import {Component, OnDestroy, ViewChild, ViewEncapsulation} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
 import { CoreService } from 'src/app/services/core.service';
@@ -36,7 +36,7 @@ const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
   encapsulation: ViewEncapsulation.None,
   standalone: true
 })
-export class FullComponent implements OnInit {
+export class FullComponent implements OnDestroy {
   navItems = navItems;
 
   @ViewChild('leftsidenav')
@@ -78,12 +78,11 @@ export class FullComponent implements OnInit {
     // This is for scroll to top
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe((e) => {
+      .subscribe(() => {
         this.content.scrollTo({ top: 0 });
       });
   }
 
-  ngOnInit(): void {}
 
   ngOnDestroy() {
     this.layoutChangesSubscription.unsubscribe();

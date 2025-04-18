@@ -10,7 +10,6 @@ export class ClientService {
   private clientsSource = new BehaviorSubject<Client[]>([]);
   clients$ = this.clientsSource.asObservable();
 
-  constructor() {}
 
   getClients(): Client[] {
     return this.clientsSource.value;

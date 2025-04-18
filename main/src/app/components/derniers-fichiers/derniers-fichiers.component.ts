@@ -22,7 +22,7 @@ interface Fichier {
   templateUrl: './derniers-fichiers.component.html'
 })
 export class DerniersFichiersComponent implements OnInit {
-  @Input() typeDocument: string = ''; // 'FACTURE', 'DEVIS' ou 'BL'
+  @Input() typeDocument = ''; // 'FACTURE', 'DEVIS' ou 'BL'
   listeFichiers: Observable<Facture[]> ;
   displayedColumns: string[] = ['numero', 'client', 'montant', 'statut', 'date', 'actions'];
 

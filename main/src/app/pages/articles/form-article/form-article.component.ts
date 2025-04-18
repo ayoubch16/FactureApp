@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
@@ -29,7 +29,7 @@ import {DataService} from "../../../services/data.service";
   standalone: true,
   templateUrl: './form-article.component.html'
 })
-export class FormArticleComponent {
+export class FormArticleComponent implements OnInit {
   articleForm: FormGroup;
   articles: Article[] = [];
   listearticles: Observable<Article[]>;

@@ -9,6 +9,7 @@ import { MaterialModule } from 'src/app/material.module';
   templateUrl: './blank.component.html',
   styleUrls: [],
   imports: [RouterOutlet, MaterialModule, CommonModule],
+  standalone: true
 })
 export class BlankComponent {
   private htmlElement!: HTMLHtmlElement;

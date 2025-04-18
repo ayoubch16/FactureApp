@@ -55,17 +55,17 @@ export class FormFactureComponent implements OnInit {
   displayedColumns2: string[] = ['numFacture', 'clientName', 'montant', 'statut', 'date', 'menu'];
 
   nouvelArticle: ArticleTable = this.initialiserNouvelArticle();
-  totalHT: number = 0;
-  tva: number = 0;
-  totalTTC: number = 0;
-  modeEdition: boolean = false;
-  articleEnEditionIndex: number = -1;
+  totalHT = 0;
+  tva = 0;
+  totalTTC = 0;
+  modeEdition = false;
+  articleEnEditionIndex = -1;
   isLoading = false;
 
   clientName: string ;
   selectedClientId: number | null = null;
-  factureDate: string = new Date().toISOString().split('T')[0];
-  factureNumber: string = '';
+  factureDate = new Date().toISOString().split('T')[0];
+  factureNumber = '';
   currentFactureId: number | null = null;
   isEditMode = false;
 

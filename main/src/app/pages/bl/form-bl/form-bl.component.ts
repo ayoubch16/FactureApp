@@ -54,14 +54,14 @@ export class FormBlComponent implements OnInit {
   displayedColumns2: string[] = ['numBl', 'clientName', 'statut', 'date', 'menu'];
 
   nouvelArticle: ArticleTable = this.initialiserNouvelArticle();
-  modeEdition: boolean = false;
-  articleEnEditionIndex: number = -1;
+  modeEdition = false;
+  articleEnEditionIndex = -1;
   isLoading = false;
 
   clientName: string;
   selectedClientId: number | null = null;
   blDate: string = new Date().toISOString().split('T')[0];
-  blNumber: string = '';
+  blNumber= '';
   currentBlId: number | null = null;
   isEditMode = false;
 

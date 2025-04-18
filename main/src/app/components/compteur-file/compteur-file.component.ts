@@ -11,10 +11,9 @@ import {NgClass} from "@angular/common";
   templateUrl: './compteur-file.component.html'
 })
 export class CompteurFileComponent implements OnInit {
-  @Input() typeDocument: string = ''; // DEVIS, FACTURE ou BL
-  nombreDocuments: number = 0;
+  @Input() typeDocument = ''; // DEVIS, FACTURE ou BL
+  nombreDocuments = 0;
 
-  constructor() { }
 
   ngOnInit(): void {
     // Ici vous pouvez implémenter la logique pour récupérer le nombre de documents

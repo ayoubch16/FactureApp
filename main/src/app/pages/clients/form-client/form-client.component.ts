@@ -12,7 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Client } from "../../../interfaces/entites";
 import { DataService } from "../../../services/data.service";
-import { Observable, of } from "rxjs";
+import { Observable } from "rxjs";
 import { finalize } from 'rxjs/operators';
 
 @Component({

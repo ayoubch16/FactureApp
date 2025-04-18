@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { ReactiveFormsModule} from "@angular/forms";
 import {Article} from "../../../interfaces/entites";
 import {Observable} from "rxjs";
@@ -30,7 +30,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
   templateUrl: './list-article.component.html',
   standalone: true
 })
-export class ListArticleComponent {
+export class ListArticleComponent implements OnInit {
   articles: Article[] = [];
   listearticles: Observable<Article[]>;
   isEditMode = false;

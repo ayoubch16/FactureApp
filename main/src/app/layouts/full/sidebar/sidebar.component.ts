@@ -2,7 +2,6 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output,
 } from '@angular/core';
 import { BrandingComponent } from './branding.component';
@@ -15,11 +14,10 @@ import { MaterialModule } from 'src/app/material.module';
   templateUrl: './sidebar.component.html',
   standalone: true
 })
-export class SidebarComponent implements OnInit {
-  constructor() {}
+export class SidebarComponent  {
+  constructor(){}
   @Input() showToggle = true;
   @Output() toggleMobileNav = new EventEmitter<void>();
   @Output() toggleCollapsed = new EventEmitter<void>();
 
-  ngOnInit(): void {}
 }
