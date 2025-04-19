@@ -90,3 +90,9 @@ export enum TypeDocument {
   FACTURE = 'FACTURE',
   BL = 'BL'
 }
+
+export interface Ville {
+  ville:string
+  codePostal:string
+  region:string
+}

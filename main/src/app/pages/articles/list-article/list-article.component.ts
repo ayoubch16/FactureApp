@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { ReactiveFormsModule} from "@angular/forms";
+import {ReactiveFormsModule} from "@angular/forms";
 import {Article} from "../../../interfaces/entites";
 import {Observable} from "rxjs";
 import {DataService} from "../../../services/data.service";
@@ -12,6 +12,8 @@ import {CommonModule} from "@angular/common";
 import {MatTableModule} from "@angular/material/table";
 import {MatIconModule} from "@angular/material/icon";
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {EventBusService} from "../../../services/event-bus.service";
+import {Event} from "../../../interfaces/EmitEvent";
 
 @Component({
   selector: 'app-list-article',
@@ -33,11 +35,9 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 export class ListArticleComponent implements OnInit {
   articles: Article[] = [];
   listearticles: Observable<Article[]>;
-  isEditMode = false;
-  currentArticleId: number | null = null;
   displayedColumns: string[] = ['nameArticle', 'unite', 'category', 'price', 'description', 'actions'];
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService,private eventBusService: EventBusService) {
 
   }
 
@@ -47,14 +47,14 @@ export class ListArticleComponent implements OnInit {
 
   loadArticles(): void {
     this.listearticles = this.dataService.getArticles();
+    this.eventBusService.onObserver([Event.MODIFIER_ARTICLE]).subscribe(
+      ()=>this.listearticles = this.dataService.getArticles())
   }
 
 
 
   editArticle(article: Article): void {
-    this.isEditMode = true;
-    this.currentArticleId = article.id;
-
+    this.eventBusService.emit<Article>(Event.MODIFIER_ARTICLE, article);
   }
 
   deleteArticle(articleId: number): void {

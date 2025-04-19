@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import {BehaviorSubject, map, Observable, of, tap} from "rxjs";
-import {Article, Bl, CategoryArticle, Client, Devis, Facture} from "../interfaces/entites";
+import {Article, Bl, CategoryArticle, Client, Devis, Facture, Ville} from "../interfaces/entites";
 
 
 
@@ -152,6 +152,12 @@ private saveClientsToFile(clients: Client[]): void {
 
   deleteBl(id: number): Observable<void> {
     return this.http.delete<void>(`${this.basePath}/bl/${id}`);
+  }
+
+
+  //ville
+  getVille(): Observable<Ville[]> {
+    return this.http.get<Ville[]>(`${this.basePath}ville.data.json`);
   }
 
 

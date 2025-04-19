@@ -10,10 +10,12 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Client } from "../../../interfaces/entites";
 import { DataService } from "../../../services/data.service";
-import { Observable } from "rxjs";
+import { Observable, map, startWith } from "rxjs";
 import { finalize } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-form-client',
@@ -29,7 +31,8 @@ import { finalize } from 'rxjs/operators';
     MatTableModule,
     MatIconModule,
     MatTooltipModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatAutocompleteModule
   ],
   templateUrl: './form-client.component.html',
 })
@@ -41,10 +44,14 @@ export class FormClientComponent implements OnInit {
   isLoading = false;
   displayedColumns: string[] = ['raisonSociale', 'adresse', 'ice', 'telephone', 'email', 'actions'];
 
+  villes: any[] = [];
+  filteredVilles: Observable<any[]>;
+
   constructor(
     private fb: FormBuilder,
     private dataService: DataService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private http: HttpClient
   ) {
     this.clientForm = this.fb.group({
       raisonSociale: ['', Validators.required],
@@ -52,15 +59,35 @@ export class FormClientComponent implements OnInit {
       codePostal: ['', Validators.required],
       ville: ['', Validators.required],
       region: ['', Validators.required],
-      pays: ['', Validators.required],
+      pays: ['MAROC', Validators.required],
       ice: ['', [Validators.required, Validators.pattern(/^[0-9]{7}$/)]],
       telephone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       email: ['', [Validators.required, Validators.email]]
     });
+
+    this.filteredVilles = this.clientForm.get('ville')!.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterVilles(value || ''))
+    );
   }
 
   ngOnInit(): void {
     this.loadClients();
+    this.loadVilles();
+  }
+
+  private _filterVilles(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.villes.filter(ville =>
+      ville.ville.toLowerCase().includes(filterValue) ||
+      ville.codePostal.includes(filterValue)
+    );
+  }
+
+  loadVilles(): void {
+    this.dataService.getVille().subscribe(data => {
+      this.villes = data;
+    });
   }
 
   loadClients(): void {
@@ -68,6 +95,16 @@ export class FormClientComponent implements OnInit {
     this.clients$ = this.dataService.getClients().pipe(
       finalize(() => this.isLoading = false)
     );
+  }
+
+  onVilleSelected(event: any): void {
+    const selectedVille = this.villes.find(v => v.ville === event.option.value);
+    if (selectedVille) {
+      this.clientForm.patchValue({
+        codePostal: selectedVille.codePostal,
+        region: selectedVille.region
+      });
+    }
   }
 
   onSubmit(): void {
@@ -122,7 +159,9 @@ export class FormClientComponent implements OnInit {
   }
 
   resetForm(): void {
-    this.clientForm.reset();
+    this.clientForm.reset({
+      pays: 'MAROC'
+    });
     this.isEditMode = false;
     this.currentClientId = null;
   }

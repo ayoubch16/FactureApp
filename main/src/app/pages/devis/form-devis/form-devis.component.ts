@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatAutocompleteSelectedEvent, MatAutocompleteModule } from "@angular/material/autocomplete";
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog, MatDialogActions} from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable, map, startWith } from "rxjs";
 import { finalize } from 'rxjs/operators';
@@ -465,12 +465,32 @@ export class FormDevisComponent implements OnInit {
   ouvrirFormulaireArticle(): void {
     const dialogRef = this.dialog.open(FormArticleComponent, {
       width: '800px',
-      data: {}
+      data: {},
+      disableClose: true, // Désactive la fermeture en cliquant à l'extérieur ou ESC
+      hasBackdrop: true,
+      panelClass: 'custom-dialog-container'
+    });
+
+    // Créez un bouton de fermeture personnalisé dans la modale
+    const closeButton = document.createElement('button');
+    closeButton.innerHTML = '&times;';
+    closeButton.className = 'custom-close-button';
+    closeButton.onclick = () => dialogRef.close();
+    // Ajoutez le bouton à la modale
+    dialogRef.afterOpened().subscribe(() => {
+      const dialogContainer = document.querySelector('.custom-dialog-container');
+      if (dialogContainer) {
+        dialogContainer.appendChild(closeButton);
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.loadArticles();
+      }
+      // Nettoie le bouton lorsque la modale est fermée
+      if (closeButton.parentNode) {
+        closeButton.parentNode.removeChild(closeButton);
       }
     });
   }
