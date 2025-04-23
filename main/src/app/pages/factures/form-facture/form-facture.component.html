@@ -205,16 +205,19 @@
               <button mat-menu-item (click)="deleteFacture(element)">
                 <mat-icon>delete</mat-icon> Supprimer
               </button>
-              <button mat-menu-item>
+              <button mat-menu-item (click)="generateBL(element)">
                 <mat-icon>request_page</mat-icon> Générer BL
               </button>
-              <button mat-menu-item>
+              <button mat-menu-item (click)="viewFacturePdf(element)">
+                <mat-icon>visibility</mat-icon> Consulter
+              </button>
+              <button mat-menu-item (click)="downloadFacture(element)">
                 <mat-icon>download</mat-icon> Télécharger
               </button>
-              <button mat-menu-item>
+              <button mat-menu-item (click)="downloadFactureForPrint(element)">
                 <mat-icon>print</mat-icon> Télécharger pour Impression
               </button>
-              <button mat-menu-item>
+              <button mat-menu-item (click)="sendFacture(element)">
                 <mat-icon>send</mat-icon> Envoyer
               </button>
             </mat-menu>

@@ -45,7 +45,7 @@ export class LoginComponent {
 
     const { email, password } = this.loginForm.value;
 
-    if (email === 'admin@test.com' && password === 'admin') {
+    if (email === 'admin@admin.com' && password === '12345678') {
       localStorage.setItem('token', 'fake-jwt-token');
       this.router.navigate(['/dashboard']);
     } else {

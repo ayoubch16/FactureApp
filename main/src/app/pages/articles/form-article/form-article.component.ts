@@ -89,6 +89,13 @@ export class FormArticleComponent implements OnInit {
       }
 
       console.log('Article sauvegardé:', articleData);
+
+
+
+
+      //  createAnnonce(annonce: Annonce): Observable<Annonce> {
+      //     return this.httpService.post(endpoints.annonce.create, annonce);
+      //   }
       this.resetForm();
     }
     this.eventBusService.emit<void>(Event.AJOUTER_ARTICLE);

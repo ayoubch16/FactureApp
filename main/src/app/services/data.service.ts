@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import {BehaviorSubject, map, Observable, of, tap} from "rxjs";
 import {Article, Bl, CategoryArticle, Client, Devis, Facture, Ville} from "../interfaces/entites";
+import {endpoints} from "../const/endpoints";
 
 
 
@@ -10,14 +11,41 @@ import {Article, Bl, CategoryArticle, Client, Devis, Facture, Ville} from "../in
 })
 export class DataService {
 
-  private basePath = 'assets/data/';
-  private clientsData = new BehaviorSubject<Client[]>([]);
+  base_url = 'http://localhost:8080';
+
   constructor(private http: HttpClient) {
     this.loadInitialClients();
   }
 
-  // Articles
+
+  //**************** Article **********************************
+
   getArticles(): Observable<Article[]> {
+    // return this.http.get<Article[]>(endpoints.article.list)
+    return this.http.get<Article[]>(endpoints.article.list)
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //************************************************************************
+  //************************************************************************
+  //************************************************************************
+
+  private basePath = 'assets/data/';
+  private clientsData = new BehaviorSubject<Client[]>([]);
+
+  // Articles
+  getArticles1(): Observable<Article[]> {
     return this.http.get<Article[]>(`${this.basePath}article.data.json`);
   }
 
