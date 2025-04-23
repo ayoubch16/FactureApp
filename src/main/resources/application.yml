@@ -1,0 +1,17 @@
+spring:
+  datasource:
+#    url: jdbc:sqlserver://localhost:1433;database=splendorAppDB;encrypt=false
+#    username: sa
+#    password: Password123
+
+    url: jdbc:mysql://localhost:3306/splendordb
+    username: root
+    password: 12345678
+  main:
+    banner-mode: off
+  jpa:
+    open-in-view: false
+  liquibase:
+    change-log: classpath:/liquibase/master.xml
+    enabled: false
+
