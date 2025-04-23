@@ -12,6 +12,8 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {Article, CategoryArticle} from "../../../interfaces/entites";
 import {Observable} from "rxjs";
 import {DataService} from "../../../services/data.service";
+import {EventBusService} from "../../../services/event-bus.service";
+import {Event} from "../../../interfaces/EmitEvent";
 
 @Component({
   selector: 'app-form-article',
@@ -25,19 +27,22 @@ import {DataService} from "../../../services/data.service";
     CommonModule,
     MatTableModule,
     MatIconModule,
-    MatTooltipModule],
+    MatTooltipModule
+  ],
   standalone: true,
   templateUrl: './form-article.component.html'
 })
 export class FormArticleComponent implements OnInit {
   articleForm: FormGroup;
   articles: Article[] = [];
-  listearticles: Observable<Article[]>;
   categories: Observable<CategoryArticle[]>;
   isEditMode = false;
   currentArticleId: number | null = null;
 
-  constructor(private fb: FormBuilder,private dataService: DataService) {
+  constructor(private fb: FormBuilder,
+              private dataService: DataService,
+              private eventBusService: EventBusService,
+                ) {
     this.articleForm = this.fb.group({
       nameArticle: ['', Validators.required],
       unite: ['', Validators.required],
@@ -48,9 +53,21 @@ export class FormArticleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.categories=this.dataService.getCategories()
+    this.eventBusService.onObserver<Article>([Event.MODIFIER_ARTICLE]).subscribe(
+      (article) => {
+        this.isEditMode = true;
+        this.currentArticleId = article.id;
+        this.articleForm.patchValue({
+          nameArticle: article.nameArticle,
+          unite: article.unite,
+          categoryArticle: article.categoryArticle,
+          descriptionArticle: article.descriptionArticle,
+          priceArticle: article.priceArticle
+        });
+      }
+    );
+    this.categories = this.dataService.getCategories();
   }
-
 
 
   onSubmit(): void {
@@ -72,13 +89,18 @@ export class FormArticleComponent implements OnInit {
       }
 
       console.log('Article sauvegardé:', articleData);
+
+
+
+
+      //  createAnnonce(annonce: Annonce): Observable<Annonce> {
+      //     return this.httpService.post(endpoints.annonce.create, annonce);
+      //   }
       this.resetForm();
     }
+    this.eventBusService.emit<void>(Event.AJOUTER_ARTICLE);
+
   }
-
-
-
-
 
   resetForm(): void {
     this.articleForm.reset();

@@ -5,15 +5,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { CommonModule, DatePipe } from '@angular/common';
 import {DataService} from "../../services/data.service";
 import {Observable} from "rxjs";
-import {Facture} from "../../interfaces/entites";
+import {Bl, Devis, Facture} from "../../interfaces/entites";
 
-interface Fichier {
-  numero: string;
-  client: string;
-  montant: number;
-  statut: string;
-  date: Date;
-}
 
 @Component({
   selector: 'app-derniers-fichiers',
@@ -23,7 +16,7 @@ interface Fichier {
 })
 export class DerniersFichiersComponent implements OnInit {
   @Input() typeDocument = ''; // 'FACTURE', 'DEVIS' ou 'BL'
-  listeFichiers: Observable<Facture[]> ;
+  listeFichiers: Observable<any[]> ;
   displayedColumns: string[] = ['numero', 'client', 'montant', 'statut', 'date', 'actions'];
 
 
@@ -40,13 +33,11 @@ export class DerniersFichiersComponent implements OnInit {
         this.listeFichiers = this.getSampleFactures();
         break;
       case 'DEVIS':
-        this.listeFichiers = this.getSampleFactures();
+        this.listeFichiers = this.getSampleDevis();
         break;
       case 'BL':
-        this.listeFichiers = this.getSampleFactures();
+        this.listeFichiers = this.getSampleBL();
         break;
-      default:
-        // this.listeFichiers = [];
     }
   }
 
@@ -59,67 +50,27 @@ export class DerniersFichiersComponent implements OnInit {
     }
   }
 
-  getStatusClass(statut: string): string {
-    switch(statut) {
-      case 'Payé': return 'text-success';
-      case 'Partiellement payé': return 'text-warning';
-      case 'Impayé': return 'text-danger';
-      case 'En attente': return 'text-info';
-      default: return '';
-    }
-  }
 
-  // Méthodes d'actions
-  edit(element: Fichier): void {
-    console.log('Modifier', element);
-    // Implémentez la logique d'édition
-  }
 
-  delete(element: Fichier): void {
-    console.log('Supprimer', element);
-    // Implémentez la logique de suppression
-  }
-
-  download(element: Fichier): void {
+  download(element: any): void {
     console.log('Télécharger', element);
-    // Implémentez la logique de téléchargement
   }
 
-  print(element: Fichier): void {
+  print(element: any): void {
     console.log('Imprimer', element);
-    // Implémentez la logique d'impression
   }
 
   // Exemples de données (à remplacer par des appels API)
-  private getSampleFactures(): Observable<Facture[]> {
+   getSampleFactures(): Observable<Facture[]> {
     return this.dataService.getFactures()
-    // return [
-    //   { numero: 'FAC-2023-001', client: 'Client A', montant: 1500, statut: 'Payé', date: new Date('2023-05-15') },
-    //   { numero: 'FAC-2023-002', client: 'Client B', montant: 2300, statut: 'Partiellement payé', date: new Date('2023-05-14') },
-    //   { numero: 'FAC-2023-003', client: 'Client C', montant: 1800, statut: 'Impayé', date: new Date('2023-05-13') },
-    //   { numero: 'FAC-2023-004', client: 'Client D', montant: 3200, statut: 'Payé', date: new Date('2023-05-12') },
-    //   { numero: 'FAC-2023-005', client: 'Client E', montant: 2750, statut: 'En attente', date: new Date('2023-05-11') }
-    // ];
   }
 
-  private getSampleDevis(): Fichier[] {
-    return [
-      { numero: 'DEV-2023-001', client: 'Client X', montant: 4200, statut: 'En attente', date: new Date('2023-05-10') },
-      { numero: 'DEV-2023-002', client: 'Client Y', montant: 3800, statut: 'Accepté', date: new Date('2023-05-09') },
-      { numero: 'DEV-2023-003', client: 'Client Z', montant: 2950, statut: 'Refusé', date: new Date('2023-05-08') },
-      { numero: 'DEV-2023-004', client: 'Client W', montant: 5100, statut: 'En attente', date: new Date('2023-05-07') },
-      { numero: 'DEV-2023-005', client: 'Client V', montant: 3400, statut: 'Accepté', date: new Date('2023-05-06') }
-    ];
+   getSampleDevis(): Observable<Devis[]>  {
+    return this.dataService.getDevis()
   }
 
-  private getSampleBL(): Fichier[] {
-    return [
-      { numero: 'BL-2023-001', client: 'Fournisseur 1', montant: 0, statut: 'Livré', date: new Date('2023-05-05') },
-      { numero: 'BL-2023-002', client: 'Fournisseur 2', montant: 0, statut: 'En cours', date: new Date('2023-05-04') },
-      { numero: 'BL-2023-003', client: 'Fournisseur 3', montant: 0, statut: 'Annulé', date: new Date('2023-05-03') },
-      { numero: 'BL-2023-004', client: 'Fournisseur 4', montant: 0, statut: 'Livré', date: new Date('2023-05-02') },
-      { numero: 'BL-2023-005', client: 'Fournisseur 5', montant: 0, statut: 'En cours', date: new Date('2023-05-01') }
-    ];
+  private getSampleBL(): Observable<Bl[]>  {
+    return this.dataService.getBls()
   }
 
   getIconClass(): string {

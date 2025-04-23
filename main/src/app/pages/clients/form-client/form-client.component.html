@@ -26,37 +26,46 @@
             </mat-error>
           </mat-form-field>
         </div>
-        <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">Code Postal*</mat-label>
-          <mat-form-field appearance="outline" class="w-100">
-            <input matInput formControlName="codePostal" placeholder="Code Postal" />
-            <mat-error *ngIf="clientForm.get('codePostal')?.hasError('required')">
-              Ce champ est obligatoire
-            </mat-error>
-          </mat-form-field>
-        </div>
+
         <div class="col-lg-6">
           <mat-label class="f-w-600 m-b-8 d-block">Ville*</mat-label>
           <mat-form-field appearance="outline" class="w-100">
-            <input matInput formControlName="ville" placeholder="Ville" />
+            <input type="text" matInput formControlName="ville" placeholder="Rechercher une ville" [matAutocomplete]="auto"/>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onVilleSelected($event)">
+              <mat-option *ngFor="let ville of filteredVilles | async" [value]="ville.ville">
+                {{ville.ville}}
+              </mat-option>
+            </mat-autocomplete>
             <mat-error *ngIf="clientForm.get('ville')?.hasError('required')">
               Ce champ est obligatoire
             </mat-error>
           </mat-form-field>
         </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Code Postal*</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput formControlName="codePostal" placeholder="Code Postal" readonly />
+            <mat-error *ngIf="clientForm.get('codePostal')?.hasError('required')">
+              Ce champ est obligatoire
+            </mat-error>
+          </mat-form-field>
+        </div>
+
         <div class="col-lg-6">
           <mat-label class="f-w-600 m-b-8 d-block">Region*</mat-label>
           <mat-form-field appearance="outline" class="w-100">
-            <input matInput formControlName="region" placeholder="Region" />
+            <input matInput formControlName="region" placeholder="Region" readonly />
             <mat-error *ngIf="clientForm.get('region')?.hasError('required')">
               Ce champ est obligatoire
             </mat-error>
           </mat-form-field>
         </div>
+
         <div class="col-lg-6">
           <mat-label class="f-w-600 m-b-8 d-block">Pays*</mat-label>
           <mat-form-field appearance="outline" class="w-100">
-            <input matInput formControlName="pays" placeholder="Pays" />
+            <input matInput formControlName="pays" placeholder="Pays" readonly />
             <mat-error *ngIf="clientForm.get('pays')?.hasError('required')">
               Ce champ est obligatoire
             </mat-error>
@@ -71,7 +80,7 @@
               Ce champ est obligatoire
             </mat-error>
             <mat-error *ngIf="clientForm.get('ice')?.hasError('pattern')">
-              L'ICE doit contenir 15 chiffres
+              L'ICE doit contenir 7 chiffres
             </mat-error>
           </mat-form-field>
         </div>

@@ -18,6 +18,9 @@ import { Article, ArticleTable, Client, Facture, StatutFacture } from "../../../
 import { DataService } from "../../../services/data.service";
 import { FormArticleComponent } from "../../articles/form-article/form-article.component";
 import {MatSpinner} from "@angular/material/progress-spinner";
+import {DomSanitizer} from "@angular/platform-browser";
+import {PdfService} from "../../../services/pdf.service";
+import {PdfViewerModalComponent} from "../../../components/pdf-viewer-modal/pdf-viewer-modal.component";
 
 @Component({
   selector: 'app-form-facture',
@@ -72,7 +75,9 @@ export class FormFactureComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private pdfService: PdfService,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
@@ -295,5 +300,89 @@ export class FormFactureComponent implements OnInit {
       duration: 5000,
       panelClass: ['error-snackbar']
     });
+  }
+
+
+
+  /**
+   * Télécharge la facture au format PDF
+   */
+  downloadFacture(facture: Facture): void {
+    this.isLoading = true;
+    this.pdfService.generateFacturePdf(facture, {
+      type: 'FACTURE',
+      withSignature: true
+    })
+      .then(blob => {
+        this.pdfService.downloadPdf(blob, `Facture_${facture.numFacture}.pdf`);
+        this.isLoading = false;
+      })
+      .catch(error => {
+        this.showErrorMessage('Erreur lors de la génération du PDF');
+        this.isLoading = false;
+        console.error(error);
+      });
+  }
+
+  /**
+   * Télécharge la facture au format PDF pour impression
+   */
+  downloadFactureForPrint(facture: Facture): void {
+    this.isLoading = true;
+    this.pdfService.generateFacturePdf(facture, {
+      type: 'FACTURE',
+      withSignature: false,
+      printVersion: true
+    })
+      .then(blob => {
+        this.pdfService.downloadPdf(blob, `Facture_${facture.numFacture}_print.pdf`);
+        this.isLoading = false;
+      })
+      .catch(error => {
+        this.showErrorMessage('Erreur lors de la génération du PDF');
+        this.isLoading = false;
+        console.error(error);
+      });
+  }
+
+  /**
+   * Ouvre un modal pour consulter la facture en PDF
+   */
+  viewFacturePdf(facture: Facture): void {
+    this.isLoading = true;
+    this.pdfService.generateFacturePdf(facture)
+      .then(blob => {
+        this.dialog.open(PdfViewerModalComponent, {
+          width: '90%',
+          maxWidth: '1000px',
+          data: {
+            title: `Facture ${facture.numFacture}`,
+            pdfBlob: blob,
+            filename: `Facture_${facture.numFacture}.pdf`
+          }
+        });
+        this.isLoading = false;
+      })
+      .catch(error => {
+        this.showErrorMessage('Erreur lors de la génération du PDF');
+        this.isLoading = false;
+        console.error(error);
+      });
+  }
+
+  /**
+   * Génère un bon de livraison
+   */
+  generateBL(facture: Facture): void {
+    // Implémentation future pour générer un BL
+    this.showSuccessMessage('Fonctionnalité à implémenter : Génération de bon de livraison');
+  }
+
+  /**
+   * Envoie la facture par email
+   */
+  sendFacture(facture: Facture): void {
+    // Implémentation future pour envoyer la facture par email
+    this.showSuccessMessage('Fonctionnalité à implémenter : Envoi de facture par email');
   }
 }

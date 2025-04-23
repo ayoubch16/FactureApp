@@ -10,37 +10,19 @@ export class AuthService {
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
   constructor(private router: Router) {
-    this.checkAuthStatus();
   }
 
-  private checkAuthStatus(): void {
-    const token = localStorage.getItem('authToken');
-    this.isAuthenticatedSubject.next(!!token);
-  }
 
-  login(email: string, password: string): boolean {
-    // Simulation d'authentification
-    if (email === 'admin@admin.com' && password === '12345678') {
-      const userData = {
-        email,
-        name: 'Administrateur',
-        role: 'admin',
-        token: 'fake-jwt-token-' + Math.random().toString(36).substring(2)
-      };
 
-      localStorage.setItem('authToken', userData.token);
-      localStorage.setItem('user', JSON.stringify(userData));
-      this.isAuthenticatedSubject.next(true);
-      return true; // Retourne true si succès
-    }
-    return false; // Retourne false si échec
-  }
+
 
   logout(): void {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
-    this.isAuthenticatedSubject.next(false);
+    localStorage.removeItem('token');
     this.router.navigate(['/authentication/login']);
+  }
+
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem('token');
   }
 
   getCurrentUser(): any {
