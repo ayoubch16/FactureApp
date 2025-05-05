@@ -62,6 +62,7 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_client"/>
             </column>
             <column name="raison_sociale" type="VARCHAR(255)"/>
+            <column name="adresse" type="VARCHAR(255)"/>
             <column name="ville" type="BIGINT"/>
             <column name="ice" type="VARCHAR(255)"/>
             <column name="telephone" type="VARCHAR(255)"/>

@@ -63,6 +63,7 @@
             <scope>runtime</scope>
         </dependency>
 
+
         <!-- Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -91,18 +92,10 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Pour manipuler les fichiers Word -->
+        <!-- Spring Boot Starter Mail pour JavaMailSender -->
         <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>5.2.3</version>
-        </dependency>
-
-        <!-- Pour la conversion en PDF -->
-        <dependency>
-            <groupId>org.apache.pdfbox</groupId>
-            <artifactId>pdfbox</artifactId>
-            <version>2.0.27</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
     </dependencies>

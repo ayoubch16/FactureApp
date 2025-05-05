@@ -1,8 +1,8 @@
 package org.example.back.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.back.domain.enums.TypeDocument;
 
 
 @Entity
@@ -24,6 +24,14 @@ public class ArticleTableDevis {
     private double prixTotal;
 
     @ManyToOne
-    @JoinColumn(name = "devis_id")
+    @JsonIgnore
+    @JoinColumn(name = "devis_id")  // Ensure this matches your DB column
     private Devis devis;
+
+    // Business logic for price calculation
+    @PrePersist
+    @PreUpdate
+    private void calculatePrixTotal() {
+        this.prixTotal = this.prixUnitaire * this.quantite;
+    }
 }

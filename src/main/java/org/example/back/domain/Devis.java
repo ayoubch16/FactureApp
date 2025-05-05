@@ -5,6 +5,7 @@ import lombok.*;
 import org.example.back.domain.enums.StatutDevis;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -33,6 +34,7 @@ public class Devis {
 
     private LocalDate date;
 
-    @OneToMany(mappedBy = "devis")
-    private List<ArticleTableDevis> articles;
+    @OneToMany(mappedBy = "devis", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ArticleTableDevis> articles = new ArrayList<>();
+
 }

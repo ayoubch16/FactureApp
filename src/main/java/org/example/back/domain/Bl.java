@@ -5,6 +5,7 @@ import lombok.*;
 import org.example.back.domain.enums.StatutBL;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -31,6 +32,7 @@ public class Bl {
 
     private LocalDate date;
 
-    @OneToMany(mappedBy = "bl") // This should match the property name in ArticleTableBl
-    private List<ArticleTableBl> articles;
+
+    @OneToMany(mappedBy = "bl", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ArticleTableBl> articles = new ArrayList<>();
 }

@@ -18,6 +18,8 @@ public class Client {
 
     private String raisonSociale;
 
+    private String adresse;
+
     @ManyToOne
     @JoinColumn(name = "ville")
     private Ville ville;

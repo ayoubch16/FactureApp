@@ -5,5 +5,6 @@ public enum StatutBL {
     LIVRE,
     PARTIELLEMENT_LIVRE,
     ANNULE,
-    FACTURE;
+    FACTURE,
+    BROUILLON;
 }

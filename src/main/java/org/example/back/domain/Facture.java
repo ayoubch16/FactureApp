@@ -5,6 +5,7 @@ import lombok.*;
 import org.example.back.domain.enums.StatutFacture;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -33,7 +34,7 @@ public class Facture {
 
     private LocalDate date;
 
-    @OneToMany(mappedBy = "facture")
-    private List<ArticleTableFacture> articles;
+    @OneToMany(mappedBy = "facture", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ArticleTableFacture> articles = new ArrayList<>();
 
 }

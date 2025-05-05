@@ -1,5 +1,6 @@
 package org.example.back.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.back.domain.enums.TypeDocument;
@@ -23,8 +24,11 @@ public class ArticleTableBl {
     private double prixUnitaire;
     private double prixTotal;
 
+
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "bl_id")
     private Bl bl;
+
 
 }

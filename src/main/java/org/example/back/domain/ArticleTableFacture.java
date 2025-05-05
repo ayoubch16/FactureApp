@@ -1,5 +1,6 @@
 package org.example.back.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.back.domain.enums.TypeDocument;
@@ -24,6 +25,7 @@ public class ArticleTableFacture {
     private double prixTotal;
 
     @ManyToOne
-    @JoinColumn(name = "facture_id")
+    @JsonIgnore
+    @JoinColumn(name = "facture_id")  // Ensure this matches your DB column
     private Facture facture;
 }

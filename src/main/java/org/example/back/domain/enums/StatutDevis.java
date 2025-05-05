@@ -4,6 +4,5 @@ public enum StatutDevis {
     EN_ATTENTE,
     ACCEPTE,
     REFUSE,
-    EXPIRE,
-    TRANSFORME_FACTURE;
+    EXPIRE;
 }

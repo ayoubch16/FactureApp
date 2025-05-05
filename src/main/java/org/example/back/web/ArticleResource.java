@@ -4,7 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.example.back.domain.Article;
+import org.example.back.domain.CategoryArticle;
+import org.example.back.domain.enums.ActionType;
+import org.example.back.domain.enums.EntityType;
 import org.example.back.repository.ArticleRepository;
+import org.example.back.repository.CategoryArticleRepository;
+import org.example.back.service.HistoriqueService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,11 +27,20 @@ import java.util.List;
 public class ArticleResource {
 
     private final ArticleRepository articleRepository;
+    private final CategoryArticleRepository categoryArticleRepository;
+    private final HistoriqueService historiqueService;
 
 
     @PostMapping
-    public ResponseEntity<List<Article>> create(@RequestBody List<Article> articles) {
-        List<Article> savedArticles = articleRepository.saveAll(articles);
+    public ResponseEntity<Article> create(@RequestBody Article articles) {
+        Article savedArticles = articleRepository.save(articles);
+        historiqueService.saveHistorique(
+                EntityType.ARTICLE,
+                ActionType.CREATE,
+                savedArticles.getId(),
+                savedArticles.getNameArticle(),
+                "Création d'un nouvel article"
+        );
         return ResponseEntity.ok(savedArticles);
     }
 
@@ -50,13 +64,32 @@ public class ArticleResource {
         if (article.getPriceArticle() != 0.0) { // Pour un double, vérifiez une valeur par défaut
             existingArticle.setPriceArticle(article.getPriceArticle());
         }
-
-        return ResponseEntity.ok(articleRepository.save(existingArticle));
+        Article savedArticles = articleRepository.save(existingArticle);
+        historiqueService.saveHistorique(
+                EntityType.ARTICLE,
+                ActionType.UPDATE,
+                savedArticles.getId(),
+                savedArticles.getNameArticle(),
+                "Modification d'un  article"
+        );
+        return ResponseEntity.ok(savedArticles);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
+        Article existingArticle = articleRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Article not found"));
+
         articleRepository.deleteById(id);
+
+        historiqueService.saveHistorique(
+                EntityType.ARTICLE,
+                ActionType.DELETE,
+                existingArticle.getId(),
+                existingArticle.getNameArticle(),
+                "Suppression d'un article"
+        );
+
         return ResponseEntity.noContent().build();
     }
 
@@ -68,6 +101,11 @@ public class ArticleResource {
     @GetMapping
     public ResponseEntity<List<Article>> getAll() {
         return ResponseEntity.ok(articleRepository.findAll());
+    }
+
+    @GetMapping("/categories")
+    public ResponseEntity<List<CategoryArticle>> getCategories() {
+        return ResponseEntity.ok(categoryArticleRepository.findAll());
     }
 
 }
